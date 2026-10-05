@@ -1,0 +1,161 @@
+.dashboard-page {
+  min-height: 100vh;
+  background-color: #f5f5f4;
+  padding: 20px 25px;
+  box-sizing: border-box;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 45px;
+  margin-bottom: 35px;
+}
+
+.dashboard-logo {
+  width: 270px;
+  height: auto;
+  object-fit: contain;
+}
+
+.top-menu {
+  flex: 1;
+  display: flex;
+  gap: 35px;
+}
+
+.menu-card {
+  width: 180px;
+  height: 105px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+
+  font-size: 24px;
+  color: #303b68;
+
+  transition: 0.2s;
+}
+
+.menu-card:hover {
+  transform: translateY(-3px);
+}
+
+.dark-point {
+  background-color: #ad3535;
+}
+
+.report {
+  background-color: #5b907c;
+}
+
+.article {
+  background-color: #e4b581;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.dashboard-content {
+  display: flex;
+  gap: 35px;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+  width: 310px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.sidebar-item {
+  min-height: 65px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 0 15px;
+
+  box-sizing: border-box;
+
+  border-radius: 9px;
+
+  background-color: #f5f5f4;
+
+  text-decoration: none;
+
+  color: #303b68;
+  font-size: 24px;
+
+  transition: 0.2s;
+}
+
+.sidebar-item:hover {
+  transform: translateX(3px);
+}
+
+.sidebar-icon {
+  font-size: 32px;
+}
+
+.map-item {
+  border: 1.5px solid #e4b581;
+}
+
+.report-item {
+  border: 1.5px solid #ad3535;
+}
+
+.article-item {
+  border: none;
+}
+
+/* =========================
+   MAP
+========================= */
+
+.map-container {
+  flex: 1;
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 400px;
+
+  border-radius: 15px;
+
+  background-color: #e8e8e3;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  color: #303b68;
+}
+
+.map-placeholder h2 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.map-placeholder p {
+  margin: 0;
+  font-size: 16px;
+  color: #68718f;
+}

@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# mengabaikan file PRD
+PRD.md
+
+# mengabaikan folder pendukung
+docs/
+
+# mengabaikan file konfigurasi
+.env

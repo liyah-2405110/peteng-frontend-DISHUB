@@ -46,7 +46,7 @@ function Layout({ children, onSearch }) {
 
   const currentPath = location.pathname
 
-  const displayName = user.nama_dinas_perhubungan || user.email?.split('@')[0] || 'Agus Heryanto'
+  const displayName = user.nama_dinas_perhubungan || user.email?.split('@')[0] || 'Petugas DISHUB'
   const displayRole = 'ADMIN DISHUB INDRAMAYU'
 
   const menuItems = [
@@ -54,7 +54,6 @@ function Layout({ children, onSearch }) {
       to: '/dashboard',
       paths: ['/dashboard', '/monitoring-peta'],
       label: 'Monitoring Peta',
-      sublabel: 'Command Center & Heatmap',
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10" />
@@ -68,7 +67,6 @@ function Layout({ children, onSearch }) {
       to: '/laporan-warga',
       paths: ['/laporan-warga'],
       label: 'Laporan Warga',
-      sublabel: 'Verifikasi AI & Tiket',
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -83,7 +81,6 @@ function Layout({ children, onSearch }) {
       to: '/artikel',
       paths: ['/artikel'],
       label: 'Publikasi Progres',
-      sublabel: 'Buletin & Update Warga',
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="m3 11 18-5v12L3 13v-2z" />
@@ -92,10 +89,9 @@ function Layout({ children, onSearch }) {
       ),
     },
     {
-      to: '/pengaturan-satgas',
+      to: '/pengaturan',
       paths: ['/pengaturan-satgas', '/pengaturan'],
-      label: 'Pengaturan & Satgas',
-      sublabel: 'Armada, Tim, & SOP PJU',
+      label: 'Pengaturan',
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
@@ -129,7 +125,7 @@ function Layout({ children, onSearch }) {
             </svg>
             <div className="clock-details">
               <span className="clock-label">WIB / GMT+7:</span>
-              <span className="clock-time">{timeStr || '22:47:19'}</span>
+              <span className="clock-time">{timeStr || '--:--:--'}</span>
             </div>
           </div>
 
@@ -150,7 +146,7 @@ function Layout({ children, onSearch }) {
 
         {/* Right: Officer Profile Badge */}
         <div className="topbar-user">
-          <div className="officer-profile" onClick={() => navigate('/pengaturan-satgas')}>
+          <div className="officer-profile" onClick={() => navigate('/pengaturan')}>
             <div className="officer-meta">
               <span className="officer-name">{displayName}</span>
               <span className="officer-role">{displayRole}</span>
@@ -192,22 +188,12 @@ function Layout({ children, onSearch }) {
                   <div className="nav-card-icon">{item.icon}</div>
                   <div className="nav-card-text">
                     <span className="nav-card-title">{item.label}</span>
-                    <span className="nav-card-sub">{item.sublabel}</span>
                   </div>
                 </Link>
               )
             })}
           </nav>
 
-          {/* Bottom Fleet Status Widget */}
-          <div className="sidebar-satgas-widget">
-            <div className="satgas-widget-header">
-              <span className="satgas-widget-label">STATUS SATGAS PJU</span>
-              <span className="satgas-status-dot" title="Sistem Aktif 24 Jam"></span>
-            </div>
-            <div className="satgas-widget-value">14 Unit Patroli Siaga</div>
-            <div className="satgas-widget-sub">Sektor Patroli Pantura Aktif</div>
-          </div>
         </aside>
 
         {/* Dynamic Page Content */}

@@ -3,45 +3,47 @@ import Login from './pages/Login'
 import LaporanWarga from './pages/LaporanWarga'
 import Artikel from './pages/Artikel'
 import Dashboard from './pages/Dashboard'
-import PengaturanSatgas from './pages/PengaturanSatgas'
+import Pengaturan from './pages/Pengaturan'
 import ProtectedRoute from './components/ProtectedRoute'
+import { DemoDataProvider } from './context/DemoDataProvider'
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
+    <DemoDataProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/dashboard"
-          element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
-        />
-        <Route
-          path="/monitoring-peta"
-          element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
-        />
-        <Route
-          path="/laporan-warga"
-          element={<ProtectedRoute><LaporanWarga /></ProtectedRoute>}
-        />
-        <Route
-          path="/artikel"
-          element={<ProtectedRoute><Artikel /></ProtectedRoute>}
-        />
-        <Route
-          path="/pengaturan-satgas"
-          element={<ProtectedRoute><PengaturanSatgas /></ProtectedRoute>}
-        />
-        <Route
-          path="/pengaturan"
-          element={<ProtectedRoute><PengaturanSatgas /></ProtectedRoute>}
-        />
+          <Route
+            path="/dashboard"
+            element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
+          />
+          <Route
+            path="/monitoring-peta"
+            element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
+          />
+          <Route
+            path="/laporan-warga"
+            element={<ProtectedRoute><LaporanWarga /></ProtectedRoute>}
+          />
+          <Route
+            path="/artikel"
+            element={<ProtectedRoute><Artikel /></ProtectedRoute>}
+          />
+          <Route
+            path="/pengaturan-satgas"
+            element={<ProtectedRoute><Pengaturan /></ProtectedRoute>}
+          />
+          <Route
+            path="/pengaturan"
+            element={<ProtectedRoute><Pengaturan /></ProtectedRoute>}
+          />
 
-        {/* Fallback route */}
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </DemoDataProvider>
   )
 }
 

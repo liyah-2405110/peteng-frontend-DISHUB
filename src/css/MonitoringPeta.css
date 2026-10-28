@@ -1,0 +1,1060 @@
+.monitoringpeta-container {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.6vw, 20px);
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.monitoringpeta-container > * {
+  min-width: 0;
+}
+
+/* ---------- Heading ---------- */
+.monitoringpeta-page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 18px;
+  padding: clamp(12px, 1.5vw, 18px) clamp(14px, 1.8vw, 20px);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.monitoringpeta-page-heading h1 {
+  margin: 5px 0;
+  color: #fff;
+  font-size: clamp(18px, 2.2vw, 23px);
+}
+
+.monitoringpeta-page-heading p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* ---------- Banner sumber data ---------- */
+.monitoringpeta-source-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 11px 14px;
+  color: var(--text-secondary);
+  background: rgba(0, 229, 255, 0.06);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: var(--radius-md);
+  font-size: 11px;
+}
+
+.monitoringpeta-source-banner strong {
+  color: var(--color-cyan);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Filter ---------- */
+.status-summary-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.monitoringpeta-map-filters {
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.category-filter-select {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px 14px;
+  width: 100%;
+}
+
+.map-filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.select-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.dark-select {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 7px 12px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* ---------- Metric cards ---------- */
+.metric-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: clamp(10px, 1.2vw, 16px);
+}
+
+.metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: clamp(14px, 1.5vw, 18px) clamp(14px, 1.6vw, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.metric-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.metric-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.metric-main-value {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.metric-main-value .number {
+  font-size: clamp(24px, 2.6vw, 32px);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.metric-main-value .unit {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.metric-subtext {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.text-muted { color: var(--text-dim); }
+
+/* ---------- Peta + kolom kanan ---------- */
+.monitoringpeta-middle-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(300px, 0.85fr);
+  gap: clamp(12px, 1.6vw, 20px);
+  align-items: start;
+}
+
+.radar-map-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: clamp(12px, 1.4vw, 18px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow-card);
+  min-width: 0;
+}
+
+.radar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.radar-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.radar-title-group h2 {
+  margin: 0;
+}
+
+.radar-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.radar-static-badge {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-cyan);
+  background: rgba(0, 229, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+.map-layer-note {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+/* Toolbar ringkasan di atas peta (gaya pill seperti mockup) */
+.map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.map-toolbar-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--bg-pill);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.map-toolbar-pill i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.map-toolbar-pill b {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.leaflet-map-shell {
+  position: relative;
+  width: 100%;
+  height: clamp(320px, 52vh, 520px);
+  overflow: hidden;
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  border-radius: var(--radius-md);
+  background: #dce5eb;
+}
+
+.leaflet-map-shell .leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  font-family: inherit;
+}
+
+.peteng-leaflet-marker {
+  overflow: visible;
+  background: transparent;
+  border: 0;
+}
+
+.map-marker-dot {
+  display: block;
+  width: 17px;
+  height: 17px;
+  margin: 3px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: var(--marker-color);
+  box-shadow: 0 1px 7px rgba(2, 8, 23, 0.8);
+}
+
+.map-marker-selected {
+  outline: 3px solid rgba(0, 229, 255, 0.75);
+  outline-offset: 2px;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  color: #0f172a;
+}
+
+.map-placeholder-message {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.map-placeholder-message strong {
+  color: var(--color-cyan);
+  font-size: 15px;
+}
+
+.map-placeholder-message span {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.leaflet-map-shell .map-empty-message {
+  z-index: 500;
+  background: #080e1b;
+  pointer-events: none;
+}
+
+.map-network-warning {
+  margin: 0;
+  padding: 8px 10px;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.08);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+}
+
+.radar-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding: 10px 12px;
+  background: var(--bg-pill);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.radar-footer strong {
+  color: var(--color-cyan);
+}
+
+/* ---------- Kolom kanan ---------- */
+.monitoringpeta-side-column {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.6vw, 20px);
+  min-width: 0;
+}
+
+.priority-detail-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: clamp(12px, 1.4vw, 18px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-card);
+  min-width: 0;
+}
+
+.priority-tags {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.report-detail-badge {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.ticket-id-tag {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.priority-title {
+  margin: 6px 0 2px;
+  font-size: clamp(15px, 1.4vw, 18px);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.priority-location {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.condition-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.report-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-pill);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.report-data-note,
+.priority-empty-state,
+.table-empty-state {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.priority-empty-state {
+  padding: 18px 12px;
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.visual-evidence-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.visual-evidence-header {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.evidence-thumbnail {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  max-height: 170px;
+  object-fit: cover;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.safe-image-fallback {
+  display: grid;
+  place-items: center;
+  min-height: 100px;
+  padding: 12px;
+  color: var(--text-muted);
+  background: var(--bg-deep);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  text-align: center;
+}
+
+.map-report-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+
+.map-report-facts > div {
+  display: grid;
+  grid-template-columns: minmax(105px, 0.7fr) minmax(0, 1.3fr);
+  gap: 8px;
+  font-size: 11px;
+}
+
+.map-report-facts dt {
+  color: var(--text-muted);
+}
+
+.map-report-facts dd {
+  margin: 0;
+  color: var(--text-main);
+  overflow-wrap: anywhere;
+}
+
+.priority-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.priority-actions > .btn-primary {
+  width: 100%;
+}
+
+.secondary-action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.btn-sec-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-pill);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-sec-action:hover {
+  background: var(--bg-card-hover);
+  color: #ffffff;
+}
+
+.btn-sec-action:disabled,
+.btn-sec-action.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Antrean */
+.other-reports-list {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: clamp(12px, 1.4vw, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow-card);
+  min-width: 0;
+}
+
+.queue-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.queue-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.queue-count {
+  font-size: 10px;
+  color: var(--color-cyan);
+  font-weight: 600;
+}
+
+.queue-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.queue-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.03);
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.queue-item.clickable {
+  cursor: pointer;
+}
+
+.queue-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.queue-item-active {
+  border-color: rgba(0, 229, 255, 0.4);
+  background: rgba(0, 229, 255, 0.06);
+}
+
+.queue-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.queue-item-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+.queue-item-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  overflow-wrap: anywhere;
+}
+
+.queue-arrow {
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+/* ---------- Tabel ---------- */
+.monitoringpeta-table-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: clamp(14px, 1.6vw, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.table-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.table-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.table-subtitle {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table-empty-state {
+  padding: 24px 14px !important;
+  text-align: center;
+}
+
+.peteng-data-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.peteng-data-table th {
+  padding: 10px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.peteng-data-table td {
+  padding: 12px;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+
+.peteng-data-table td:nth-child(2) {
+  max-width: 280px;
+  overflow-wrap: anywhere;
+}
+
+.monitoringpeta-report-row {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.monitoringpeta-report-row:hover {
+  background: rgba(0, 229, 255, 0.06);
+}
+
+.row-selected {
+  background: rgba(0, 229, 255, 0.06);
+  box-shadow: inset 3px 0 0 var(--color-cyan);
+}
+
+.ticket-id-link {
+  color: var(--color-cyan);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.chip-gangguan {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: var(--bg-pill);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.table-cell-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-dim);
+}
+
+.status-dot.tone-green { background: var(--color-green); }
+.status-dot.tone-amber { background: var(--color-amber); }
+.status-dot.tone-cyan { background: var(--color-cyan); }
+.status-dot.tone-muted { background: var(--text-dim); }
+
+/* ---------- Responsif ---------- */
+@media (max-width: 1050px) {
+  .monitoringpeta-middle-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .leaflet-map-shell {
+    height: clamp(300px, 46vh, 440px);
+  }
+}
+
+@media (max-width: 700px) {
+  .monitoringpeta-page-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .category-filter-select {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metric-subtext {
+    display: none;
+  }
+
+  .leaflet-map-shell {
+    height: 320px;
+  }
+
+  .radar-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .map-report-facts > div {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+}
+
+@media (max-width: 420px) {
+  .metric-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Daftar laporan (kolom kanan) ---------- */
+.report-list-scroll {
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.queue-item .status-dot {
+  align-self: flex-start;
+  margin-top: 5px;
+}
+
+/* Overlay saat belum ada marker: peta tetap terlihat di belakangnya */
+.leaflet-map-shell .map-empty-message {
+  background: rgba(8, 14, 27, 0.72);
+}
+
+/* ---------- Form perbarui status ---------- */
+.status-update-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--bg-pill);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: var(--radius-md);
+}
+
+.status-update-current {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.status-update-current strong {
+  color: var(--text-main);
+}
+
+.dark-textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 70px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.dark-textarea:focus,
+.dark-select:focus {
+  border-color: rgba(0, 229, 255, 0.5);
+}
+
+.update-message {
+  margin: 0;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+}
+
+.update-message.update-success {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.update-message.update-error {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.status-update-form .btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Penanda mode demo ---------- */
+.monitoringpeta-source-banner.source-demo {
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.monitoringpeta-source-banner.source-demo strong {
+  color: #fbbf24;
+}
+
+.radar-static-badge.is-demo {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+/* ==========================================================================
+   Perataan tata letak: peta mengikuti tinggi kolom kanan, tabel rapi
+   ========================================================================== */
+.monitoringpeta-middle-grid {
+  align-items: stretch;
+}
+
+/* Peta mengisi sisa tinggi kartu, sehingga tidak ada ruang kosong di bawahnya */
+.leaflet-map-shell {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: clamp(320px, 52vh, 520px);
+}
+
+.leaflet-map-shell .leaflet-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Kolom kanan lebih ringkas */
+.evidence-thumbnail {
+  max-height: 130px;
+}
+
+.report-list-scroll {
+  max-height: 260px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+}
+
+.report-list-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.report-list-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.report-list-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 999px;
+}
+
+.report-list-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.55);
+}
+
+/* Tabel: kolom tidak menyempit dan baris sejajar */
+.peteng-data-table {
+  min-width: 860px;
+}
+
+.peteng-data-table td {
+  vertical-align: middle;
+}
+
+.peteng-data-table td:nth-child(1) { width: 130px; }
+.peteng-data-table td:nth-child(2) { min-width: 240px; max-width: 320px; }
+.peteng-data-table td:nth-child(3) { width: 150px; }
+.peteng-data-table td:nth-child(4) { width: 170px; }
+.peteng-data-table td:nth-child(5) { min-width: 210px; }
+.peteng-data-table td:nth-child(6) { width: 150px; }
+
+.peteng-data-table td:nth-child(4) .table-cell-status,
+.peteng-data-table td:nth-child(6) {
+  white-space: nowrap;
+}
+
+.table-cell-status {
+  align-items: center;
+}
+
+.peteng-data-table th:nth-child(n) {
+  text-align: left;
+}
+
+@media (max-width: 1050px) {
+  .leaflet-map-shell {
+    flex: none;
+    height: clamp(300px, 46vh, 440px);
+    min-height: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .leaflet-map-shell {
+    height: 320px;
+  }
+}
+
+/* ---------- Unggah foto bukti penanganan ---------- */
+.file-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 10px;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.file-input::file-selector-button {
+  margin-right: 10px;
+  padding: 5px 12px;
+  color: var(--color-cyan);
+  background: transparent;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.file-input:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+}
+
+.update-hint {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 10px;
+}
+
+.update-photo-preview {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}

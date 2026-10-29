@@ -13,10 +13,10 @@ import {
 import '../css/LaporanWarga.css'
 
 const STATUS_LABELS = {
-  diajukan: 'Menunggu validasi AI',
+  diajukan: 'Menunggu divalidasi AI',
   diproses_ai: 'AI sedang memvalidasi',
-  diterima: 'Diterima DISHUB',
-  ditolak: 'Tidak valid menurut AI',
+  diterima: 'Tervalidasi AI',
+  ditolak: 'Laporan tidak valid',
   diproses: 'Dalam penanganan',
   selesai: 'Selesai ditangani',
 }
@@ -40,11 +40,28 @@ const LIGHTING_LABELS = {
 }
 const FILTER_TABS = [
   { value: 'Semua', label: 'Semua' },
-  { value: 'ai', label: 'Menunggu AI' },
-  { value: 'diterima', label: 'Siap ditangani' },
+  { value: 'ai', label: 'Menunggu divalidasi AI' },
   { value: 'diproses', label: 'Dalam penanganan' },
-  { value: 'selesai', label: 'Selesai' },
-  { value: 'ditolak', label: 'Tidak valid AI' },
+  { value: 'selesai', label: 'Selesai ditangani' },
+  { value: 'ditolak', label: 'Laporan tidak valid' },
+]
+
+// ===========================================================================
+// MODE DEMO: true = halaman memakai DEMO_REPORTS (belum memanggil backend).
+// Saat backend siap, ubah jadi false. Tidak ada kode lain yang perlu diubah.
+// ===========================================================================
+const USE_DEMO_DATA = true
+
+const DEMO_REPORTS = [
+  { id_laporan: 'LP-2610-101', kategori: 'PJU_MATI', status: 'diterima', status_penanganan: 'perlu_penanganan', keterangan_lokasi: 'Jl. Raya Lohbener, dekat pertigaan Pantura', deskripsi: 'Lampu jalan padam sepanjang sekitar 450 meter', pelapor_nama: 'Budi Santoso', tingkat_kegelapan: 'Tinggi', foto: null, latitude: -6.388, longitude: 108.257, kondisi_penerangan: 'gelap', tanggal_laporan: '2026-10-27T19:20:00+07:00' },
+  { id_laporan: 'LP-2610-102', kategori: 'PJU_RUSAK', status: 'diproses', status_penanganan: 'dalam_penanganan', keterangan_lokasi: 'Jl. Raya Siliwangi, Karangampel', deskripsi: 'Tiang lampu miring dan lampu berkedip', pelapor_nama: 'Siti Aminah', tingkat_kegelapan: 'Sedang', foto: null, latitude: -6.4686, longitude: 108.4333, kondisi_penerangan: 'redup', tanggal_laporan: '2026-10-26T18:45:00+07:00', progres: [{ id_progres: 'p1', judul: 'Penanganan dimulai', deskripsi: 'Petugas menuju lokasi untuk memeriksa tiang.', tanggal_progres: '2026-10-27T08:30:00+07:00' }] },
+  { id_laporan: 'LP-2610-103', kategori: 'PJU_MATI', status: 'selesai', status_penanganan: 'selesai_ditangani', keterangan_lokasi: 'Jl. Mayor Dasuki, Sindang', deskripsi: 'Tiga titik lampu mati di dekat alun-alun', pelapor_nama: 'Rudi Hartono', tingkat_kegelapan: 'Tinggi', foto: null, latitude: -6.333, longitude: 108.282, kondisi_penerangan: 'baik', tanggal_laporan: '2026-10-24T20:05:00+07:00', catatan_penanganan: 'Tiga lampu diganti dan kini menyala normal.', progres: [{ id_progres: 'p2', judul: 'Penanganan dimulai', deskripsi: 'Petugas menuju lokasi.', tanggal_progres: '2026-10-25T09:00:00+07:00' }, { id_progres: 'p3', judul: 'Bukti perbaikan diunggah', deskripsi: 'Tiga lampu diganti dan kini menyala normal.', tanggal_progres: '2026-10-25T14:10:00+07:00' }] },
+  { id_laporan: 'LP-2610-104', kategori: 'PJU_TIDAK_ADA', status: 'diajukan', keterangan_lokasi: 'Jl. Raya Jatibarang, area persawahan', deskripsi: 'Ruas jalan gelap, belum ada lampu jalan', pelapor_nama: 'Agus Salim', tingkat_kegelapan: 'Tinggi', foto: null, latitude: -6.473, longitude: 108.301, kondisi_penerangan: 'gelap', tanggal_laporan: '2026-10-28T21:10:00+07:00' },
+  { id_laporan: 'LP-2610-105', kategori: 'LAINNYA', status: 'diproses_ai', keterangan_lokasi: 'Jl. Raya Haurgeulis, dekat pasar', deskripsi: 'Kabel PJU menjuntai di pinggir jalan', pelapor_nama: 'Dewi Lestari', tingkat_kegelapan: 'Rendah', foto: null, latitude: -6.444, longitude: 108.1, kondisi_penerangan: 'belum_diketahui', tanggal_laporan: '2026-10-28T06:40:00+07:00' },
+  { id_laporan: 'LP-2610-106', kategori: 'PJU_MATI', status: 'ditolak', keterangan_lokasi: 'Jl. Jenderal Sudirman, Indramayu Kota', deskripsi: 'Lampu jalan mati (foto tidak jelas)', pelapor_nama: 'Anonim', tingkat_kegelapan: 'Rendah', foto: null, latitude: -6.3264, longitude: 108.32, kondisi_penerangan: 'belum_diketahui', tanggal_laporan: '2026-10-23T22:15:00+07:00' },
+  { id_laporan: 'LP-2610-107', kategori: 'PJU_MATI', status: 'diterima', status_penanganan: 'perlu_penanganan', keterangan_lokasi: 'Jl. Pahlawan, Sindang', deskripsi: 'Dua lampu mati dekat sekolah', pelapor_nama: 'Hendra', tingkat_kegelapan: 'Sedang', foto: null, latitude: -6.34, longitude: 108.295, kondisi_penerangan: 'gelap', tanggal_laporan: '2026-10-26T19:50:00+07:00' },
+  { id_laporan: 'LP-2610-108', kategori: 'PJU_RUSAK', status: 'diproses', status_penanganan: 'menunggu_verifikasi', keterangan_lokasi: 'Jl. Raya Lohbener Barat, KM 14', deskripsi: 'Lampu di tikungan rawan kecelakaan berkedip', pelapor_nama: 'Yusuf', tingkat_kegelapan: 'Sedang', foto: null, latitude: -6.395, longitude: 108.238, kondisi_penerangan: 'redup', tanggal_laporan: '2026-10-25T20:15:00+07:00', catatan_penanganan: 'Lampu diganti, menunggu validasi bukti.' },
+  { id_laporan: 'LP-2610-109', kategori: 'PJU_RUSAK', status: 'selesai', status_penanganan: 'selesai_ditangani', keterangan_lokasi: 'Jl. Jenderal Sudirman, depan kantor kecamatan', deskripsi: 'Panel lampu rusak, penerangan tidak stabil', pelapor_nama: 'Lina', tingkat_kegelapan: 'Sedang', foto: null, latitude: -6.329, longitude: 108.318, kondisi_penerangan: 'baik', tanggal_laporan: '2026-10-21T19:30:00+07:00', catatan_penanganan: 'Panel diperbaiki, lampu menyala stabil.' },
 ]
 
 function formatDate(value) {
@@ -54,8 +71,8 @@ function formatDate(value) {
 }
 
 function LaporanWarga() {
-  const [reports, setReports] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [reports, setReports] = useState(USE_DEMO_DATA ? DEMO_REPORTS : [])
+  const [loading, setLoading] = useState(!USE_DEMO_DATA)
   const [loadError, setLoadError] = useState('')
   const [selectedReportId, setSelectedReportId] = useState('')
   const [activeTab, setActiveTab] = useState('Semua')
@@ -81,6 +98,10 @@ function LaporanWarga() {
   }, [])
 
   const refreshReports = useCallback(async (selectId = '') => {
+    if (USE_DEMO_DATA) {
+      if (selectId) setSelectedReportId(selectId)
+      return []
+    }
     const result = await getLaporanDinasBackend()
     const rows = Array.isArray(result) ? result : []
     setReports(rows)
@@ -91,6 +112,7 @@ function LaporanWarga() {
   }, [selectedReportId])
 
   useEffect(() => {
+    if (USE_DEMO_DATA) return undefined
     let active = true
     getLaporanDinasBackend()
       .then((result) => {
@@ -110,6 +132,11 @@ function LaporanWarga() {
     if (!selectedReport?.id_laporan) return undefined
     let active = true
     const id = selectedReport.id_laporan
+    if (USE_DEMO_DATA) {
+      setDetail({ laporan: selectedReport, progres: selectedReport.progres || [] })
+      setDetailError('')
+      return undefined
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect -- clear detail from the previously selected report.
     setDetail(null)
     setDetailError('')
@@ -122,7 +149,7 @@ function LaporanWarga() {
   // Otomatis mencoba validasi laporan yang belum selesai diproses. Tidak ada tombol validasi manual.
   const selectedReportStatus = selectedReport?.status
   useEffect(() => {
-    if (!selectedReport?.id_laporan || !['diajukan', 'diproses_ai'].includes(selectedReportStatus)) return
+    if (USE_DEMO_DATA || !selectedReport?.id_laporan || !['diajukan', 'diproses_ai'].includes(selectedReportStatus)) return
     const id = selectedReport.id_laporan
     if (autoValidationStarted.current.has(id)) return
     autoValidationStarted.current.add(id)
@@ -146,7 +173,8 @@ function LaporanWarga() {
   const counts = useMemo(() => ({
     semua: reports.length,
     ai: reports.filter((item) => ['diajukan', 'diproses_ai'].includes(item.status)).length,
-    diterima: reports.filter((item) => item.status === 'diterima').length,
+    // tervalidasi = sudah lolos validasi AI (diterima, sedang ditangani, atau selesai)
+    valid: reports.filter((item) => ['diterima', 'diproses', 'selesai'].includes(item.status)).length,
     diproses: reports.filter((item) => item.status === 'diproses').length,
     selesai: reports.filter((item) => item.status === 'selesai').length,
     ditolak: reports.filter((item) => item.status === 'ditolak').length,
@@ -166,6 +194,14 @@ function LaporanWarga() {
 
   const handleStartHandling = async () => {
     if (!selectedReport) return
+    if (USE_DEMO_DATA) {
+      const entry = { id_progres: `demo-${Date.now()}`, judul: 'Penanganan dimulai', deskripsi: 'Petugas DISHUB mulai menangani laporan.', tanggal_progres: new Date().toISOString() }
+      const updated = { ...selectedReport, status: 'diproses', status_penanganan: 'dalam_penanganan', progres: [...(selectedReport.progres || []), entry] }
+      setReports((prev) => prev.map((item) => (item.id_laporan === updated.id_laporan ? updated : item)))
+      setDetail({ laporan: updated, progres: updated.progres })
+      showToast('Penanganan dimulai.')
+      return
+    }
     setActionLoading(true)
     try {
       await mulaiPenangananLaporan(selectedReport.id_laporan)
@@ -208,6 +244,26 @@ function LaporanWarga() {
     if (!selectedReport) return
     if (evidenceNote.trim().length < 3 || !evidenceFile) {
       setEvidenceError('Isi catatan minimal 3 karakter dan pilih foto bukti perbaikan.')
+      return
+    }
+    if (USE_DEMO_DATA) {
+      const entry = { id_progres: `demo-${Date.now()}`, judul: 'Bukti perbaikan diunggah', deskripsi: evidenceNote.trim(), tanggal_progres: new Date().toISOString() }
+      const updated = {
+        ...selectedReport,
+        status: 'selesai',
+        status_penanganan: 'selesai_ditangani',
+        kondisi_penerangan: evidenceCondition,
+        catatan_penanganan: evidenceNote.trim(),
+        foto_bukti_url: URL.createObjectURL(evidenceFile),
+        progres: [...(selectedReport.progres || []), entry],
+      }
+      setReports((prev) => prev.map((item) => (item.id_laporan === updated.id_laporan ? updated : item)))
+      setDetail({ laporan: updated, progres: updated.progres })
+      setEvidenceNote('')
+      setEvidenceFile(null)
+      setEvidencePreview('')
+      setEvidenceError('')
+      showToast('Bukti tersimpan. Penanganan selesai.')
       return
     }
     setActionLoading(true)
@@ -266,7 +322,7 @@ function LaporanWarga() {
         </section>
 
         <section className="metric-cards-grid report-stats-grid">
-          {[['MENUNGGU AI', counts.ai], ['SIAP DITANGANI', counts.diterima], ['DALAM PENANGANAN', counts.diproses], ['SELESAI', counts.selesai]].map(([label, value]) => (
+          {[['MENUNGGU DIVALIDASI AI', counts.ai], ['LAPORAN TERVALIDASI', counts.valid], ['DALAM PENANGANAN', counts.diproses], ['SELESAI DITANGANI', counts.selesai]].map(([label, value]) => (
             <div className="metric-card" key={label}><span className="metric-label">{label}</span><strong className="metric-main-value">{loading ? '…' : value}</strong></div>
           ))}
         </section>
@@ -330,7 +386,7 @@ function LaporanWarga() {
                   {evidenceError && <p className="error-state" role="alert">{evidenceError}</p>}
                   <button type="submit" className="btn-primary" disabled={actionLoading}>{actionLoading ? 'Menyimpan…' : 'Kirim bukti untuk validasi AI otomatis'}</button>
                 </form>}
-                {selectedReport.foto_bukti_url && <div className="before-after-photos"><div><span>Foto bukti perbaikan</span><AuthenticatedImage src={selectedReport.foto_bukti_url} alt="Foto bukti perbaikan" fallback="Foto bukti tidak tersedia" /></div></div>}
+                {selectedReport.foto_bukti_url && <div className="before-after-photos"><div><span>Foto bukti perbaikan</span>{selectedReport.foto_bukti_url.startsWith('blob:') ? <img src={selectedReport.foto_bukti_url} alt="Foto bukti perbaikan" /> : <AuthenticatedImage src={selectedReport.foto_bukti_url} alt="Foto bukti perbaikan" fallback="Foto bukti tidak tersedia" />}</div></div>}
                 {reportDetail?.catatan_penanganan && <div className="handling-note-view"><strong>Catatan penanganan</strong><p>{reportDetail.catatan_penanganan}</p></div>}
                 {progress.length > 0 && <div className="report-progress-history"><h4>Riwayat progres</h4>{progress.map((item) => <article key={item.id_progres}><strong>{item.judul}</strong><p>{item.deskripsi}</p><small>{formatDate(item.tanggal_progres || item.created_at)}</small></article>)}</div>}
               </section>

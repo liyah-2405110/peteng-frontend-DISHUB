@@ -744,3 +744,391 @@
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   PERBAIKAN TAMPILAN LAPORAN WARGA
+   JSX memakai class (report-workspace-grid, report-list-panel, publication-tab,
+   handling-panel, dst.) yang belum ada di CSS lama. Semua diatur di sini,
+   dibatasi di dalam .laporan-warga-page agar tidak mengganggu halaman lain.
+   ========================================================================== */
+.laporan-warga-page {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  gap: clamp(12px, 1.6vw, 20px);
+}
+
+.laporan-warga-page > * { min-width: 0; }
+
+/* ---------- Header ---------- */
+.laporan-warga-page .laporan-top-header {
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  padding: clamp(14px, 1.8vw, 20px) clamp(16px, 2vw, 24px);
+}
+
+.laporan-warga-page .header-main-title { font-size: clamp(19px, 2.2vw, 23px); }
+
+.laporan-warga-page .header-stats-row {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.laporan-warga-page .stat-box { min-width: 120px; }
+
+.laporan-warga-page .header-stats-row .btn-export-rekap { align-self: center; }
+
+/* tombol "Muat ulang" dibuat sekunder */
+.laporan-warga-page .header-stats-row .btn-export-rekap:last-child {
+  color: var(--text-secondary);
+  background: var(--bg-pill);
+  border: 1px solid var(--border-subtle);
+}
+
+.laporan-warga-page .header-stats-row .btn-export-rekap:last-child:hover {
+  color: #fff;
+  border-color: rgba(0, 229, 255, 0.4);
+  background: var(--bg-pill);
+}
+
+/* ---------- Kartu ringkasan ---------- */
+.laporan-warga-page .metric-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: clamp(10px, 1.2vw, 16px);
+}
+
+.laporan-warga-page .metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(14px, 1.5vw, 18px) clamp(14px, 1.6vw, 20px);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.laporan-warga-page .metric-label {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.laporan-warga-page .metric-main-value {
+  display: block;
+  color: #fff;
+  font-size: clamp(24px, 2.6vw, 32px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* ---------- Daftar + detail ---------- */
+.report-workspace-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.85fr);
+  align-items: start;
+  gap: clamp(12px, 1.6vw, 20px);
+}
+
+.report-list-panel,
+.detail-panel-card {
+  min-width: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.report-list-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(12px, 1.4vw, 16px);
+}
+
+.report-list-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.report-list-toolbar input[type="search"],
+.report-list-toolbar select {
+  min-height: 38px;
+  padding: 8px 12px;
+  color: var(--text-main);
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-size: 12px;
+  outline: none;
+}
+
+.report-list-toolbar input[type="search"] { flex: 1 1 240px; min-width: 0; }
+.report-list-toolbar select { flex: 0 1 170px; cursor: pointer; }
+
+.report-list-toolbar input:focus,
+.report-list-toolbar select:focus { border-color: rgba(0, 229, 255, 0.5); }
+
+/* Tab filter status */
+.laporan-warga-page .publication-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.laporan-warga-page .publication-tab {
+  padding: 6px 14px;
+  color: var(--text-secondary);
+  background: var(--bg-pill);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.laporan-warga-page .publication-tab:hover { color: #fff; }
+
+.laporan-warga-page .publication-tab.active {
+  color: var(--color-cyan);
+  background: rgba(0, 229, 255, 0.13);
+  border-color: var(--color-cyan);
+}
+
+/* Tabel */
+.report-list-panel .table-responsive {
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.laporan-warga-page .queue-table {
+  width: 100%;
+  min-width: 640px;
+  font-size: 12px;
+}
+
+.laporan-warga-page .queue-table th {
+  padding: 11px 14px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.laporan-warga-page .queue-table td {
+  padding: 12px 14px;
+  vertical-align: middle;
+}
+
+.laporan-warga-page .queue-table td:nth-child(1) { white-space: nowrap; }
+.laporan-warga-page .queue-table td:nth-child(2) { min-width: 200px; overflow-wrap: anywhere; }
+.laporan-warga-page .queue-table td:nth-child(3) { min-width: 90px; }
+.laporan-warga-page .queue-table td:nth-child(5) { min-width: 110px; }
+
+.laporan-warga-page .queue-row { transition: background 0.15s ease; }
+
+.laporan-warga-page .queue-row-active { box-shadow: inset 3px 0 0 var(--color-cyan); }
+
+.laporan-warga-page .queue-row:focus-visible {
+  outline: 2px solid rgba(0, 229, 255, 0.6);
+  outline-offset: -2px;
+}
+
+.status-diajukan,
+.status-diproses_ai {
+  background: rgba(148, 163, 184, 0.14);
+  color: #cbd5e1;
+}
+
+.handling-state-label {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.report-list-panel .empty-state,
+.report-list-panel .error-state {
+  padding: 28px 12px;
+  text-align: center;
+}
+
+.error-state button {
+  margin-left: 10px;
+  padding: 5px 12px;
+  color: var(--color-cyan);
+  background: transparent;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ---------- Panel detail ---------- */
+.detail-panel-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(14px, 1.6vw, 18px);
+}
+
+.detail-panel-card .empty-state { padding: 20px 4px; text-align: center; }
+
+.laporan-warga-page .report-photo,
+.laporan-warga-page .validation-panel,
+.laporan-warga-page .handling-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.laporan-warga-page .handling-panel h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 13px;
+}
+
+.laporan-warga-page .report-photo img,
+.laporan-warga-page .before-after-photos img {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  background: var(--bg-deep);
+  border-radius: var(--radius-md);
+}
+
+.laporan-warga-page .report-photo .empty-state { padding: 0; text-align: left; }
+
+.handling-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--bg-pill);
+  border-radius: var(--radius-md);
+  font-size: 11px;
+}
+
+.handling-status span { color: var(--text-muted); }
+.handling-status strong { color: var(--color-cyan); }
+
+.laporan-warga-page .handling-panel > .btn-primary { align-self: stretch; }
+
+.laporan-warga-page .evidence-form .btn-primary { width: 100%; }
+
+.laporan-warga-page .evidence-form input[type="file"]::file-selector-button {
+  margin-right: 10px;
+  padding: 5px 12px;
+  color: var(--color-cyan);
+  background: transparent;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.laporan-warga-page .evidence-form .error-state { padding: 0; }
+
+.report-progress-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.report-progress-history h4 {
+  margin: 0;
+  color: #fff;
+  font-size: 12px;
+}
+
+.report-progress-history article {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  background: var(--bg-pill);
+  border-left: 2px solid var(--color-cyan);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+}
+
+.report-progress-history article strong { color: var(--text-main); }
+
+.report-progress-history article p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.report-progress-history article small { color: var(--text-muted); font-size: 10px; }
+
+/* ---------- Notifikasi melayang ---------- */
+.laporan-warga-page .toast-notification {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1000;
+  max-width: min(420px, calc(100vw - 32px));
+  background: var(--bg-card);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* ---------- Responsif ---------- */
+@media (max-width: 1100px) {
+  .report-workspace-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 700px) {
+  .laporan-warga-page .header-stats-row { align-items: stretch; }
+  .laporan-warga-page .header-stats-row > * { flex: 1 1 100%; }
+  .report-list-toolbar select { flex: 1 1 100%; }
+  .laporan-warga-page .toast-notification { right: 16px; left: 16px; bottom: 16px; }
+}
+
+/* Toolbar pencarian: satu baris rapi (pencarian + dua dropdown) */
+.report-list-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px 130px;
+  gap: 8px;
+}
+
+.report-list-toolbar input[type="search"],
+.report-list-toolbar select {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 700px) {
+  .report-list-toolbar { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Status "Tervalidasi AI" memakai warna biru (bukan kuning peringatan) */
+.status-diterima {
+  background: rgba(96, 165, 250, 0.15);
+  color: #93c5fd;
+}
+
+/* Foto bukti perbaikan tampil selebar panel */
+.laporan-warga-page .before-after-photos { grid-template-columns: minmax(0, 1fr); }
+.laporan-warga-page .before-after-photos > div { font-size: 11px; }

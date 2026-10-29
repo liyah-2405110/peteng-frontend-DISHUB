@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
 import LaporanWarga from './pages/LaporanWarga'
-import Artikel from './pages/Artikel'
+import PublikasiProgres from './pages/PublikasiProgres'
 import MonitoringPeta from './pages/MonitoringPeta'
 import Pengaturan from './pages/Pengaturan'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -15,7 +15,7 @@ function App() {
         <Route path="/dashboard" element={<Navigate to="/monitoring-peta" replace />} />
         <Route path="/monitoring-peta" element={<ProtectedRoute><MonitoringPeta /></ProtectedRoute>} />
         <Route path="/laporan-warga" element={<ProtectedRoute><LaporanWarga /></ProtectedRoute>} />
-        <Route path="/artikel" element={<ProtectedRoute><Artikel /></ProtectedRoute>} />
+        <Route path="/publikasi-progres" element={<ProtectedRoute><PublikasiProgres /></ProtectedRoute>} />
         <Route path="/pengaturan-satgas" element={<ProtectedRoute><Pengaturan /></ProtectedRoute>} />
         <Route path="/pengaturan" element={<ProtectedRoute><Pengaturan /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/monitoring-peta" replace />} />

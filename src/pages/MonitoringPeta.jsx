@@ -3,8 +3,9 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { useNavigate } from 'react-router-dom'
 import SafeImage from '../components/SafeImage'
+import AuthenticatedImage from '../components/AuthenticatedImage'
 import Layout from '../components/Layout'
-import { getLaporanDinasBackend, updateStatusLaporan, simpanBuktiPenanganan } from '../services/laporanService'
+import { getLaporanDinasBackend, mulaiPenangananLaporan, simpanBuktiPenanganan } from '../services/laporanService'
 import 'leaflet/dist/leaflet.css'
 import '../css/MonitoringPeta.css'
 
@@ -63,10 +64,12 @@ const DEFAULT_CENTER = [-6.3264, 108.32]
 
 // Kondisi penerangan yang dicatat petugas setelah penanganan selesai
 const BUKTI_LIGHTING_OPTIONS = [
-  { value: 'gelap', label: 'Gelap / lampu tidak berfungsi' },
-  { value: 'redup', label: 'Redup' },
   { value: 'baik', label: 'Baik' },
+  { value: 'redup', label: 'Redup' },
+  { value: 'gelap', label: 'Masih gelap / bermasalah' },
+  { value: 'belum_diketahui', label: 'Belum diketahui' },
 ]
+const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 const MAX_PHOTO_MB = 5
 
 const UPDATE_STATUS_OPTIONS = [
@@ -155,13 +158,13 @@ function MonitoringPeta() {
   const [categoryFilter, setCategoryFilter] = useState('Semua')
   const [statusFilter, setStatusFilter] = useState('Semua')
   const [lightingFilter, setLightingFilter] = useState('Semua')
+  const [searchQuery, setSearchQuery] = useState('')
   const [tilesFailed, setTilesFailed] = useState(false)
   const [copied, setCopied] = useState(false)
   const [updateOpen, setUpdateOpen] = useState(false)
-  const [updateStatus, setUpdateStatus] = useState('')
-  const [updateTitle, setUpdateTitle] = useState('')
+  const [updateStatus, setUpdateStatus] = useState('selesai')
   const [updateNote, setUpdateNote] = useState('')
-  const [updateLighting, setUpdateLighting] = useState('')
+  const [updateLighting, setUpdateLighting] = useState('baik')
   const [updatePhoto, setUpdatePhoto] = useState(null)
   const [updatePhotoPreview, setUpdatePhotoPreview] = useState('')
   const [updateState, setUpdateState] = useState('idle') // idle | saving | success | error
@@ -194,8 +197,14 @@ function MonitoringPeta() {
     if (lightingFilter !== 'Semua') {
       if (getLightingCondition(report) !== lightingFilter) return false
     }
+    const keyword = searchQuery.trim().toLocaleLowerCase()
+    if (keyword) {
+      const searchable = [report.id_laporan, report.keterangan_lokasi, report.deskripsi]
+        .filter(Boolean).join(' ').toLocaleLowerCase()
+      if (!searchable.includes(keyword)) return false
+    }
     return true
-  }), [reports, categoryFilter, statusFilter, lightingFilter])
+  }), [reports, categoryFilter, statusFilter, lightingFilter, searchQuery])
 
   const coordinateReports = filteredReports.filter(hasCoordinates)
   const selectedReport = filteredReports.find((report) => report.id_laporan === selectedReportId)
@@ -243,10 +252,9 @@ function MonitoringPeta() {
 
   const resetUpdateFields = () => {
     clearPhoto()
-    setUpdateStatus('')
-    setUpdateTitle('')
+    setUpdateStatus('selesai') // langkah akhir: kolom foto bukti langsung aktif saat form dibuka
     setUpdateNote('')
-    setUpdateLighting('')
+    setUpdateLighting('baik')
     setUpdateState('idle')
     setUpdateMessage('')
   }
@@ -265,7 +273,10 @@ function MonitoringPeta() {
     setUpdateStatus(value)
     setUpdateState('idle')
     setUpdateMessage('')
-    if (value !== 'selesai') clearPhoto()
+    if (value !== 'selesai') {
+      clearPhoto()
+      setUpdateNote('')
+    }
   }
 
   const handlePhotoChange = (event) => {
@@ -275,10 +286,10 @@ function MonitoringPeta() {
     setUpdateState('idle')
     setUpdateMessage('')
     if (!file) return
-    if (!file.type.startsWith('image/')) {
+    if (!PHOTO_TYPES.includes(file.type)) {
       input.value = ''
       setUpdateState('error')
-      setUpdateMessage('File harus berupa gambar (JPG, PNG, atau WebP).')
+      setUpdateMessage('Pilih foto JPEG, PNG, atau WebP.')
       return
     }
     if (file.size > MAX_PHOTO_MB * 1024 * 1024) {
@@ -293,8 +304,7 @@ function MonitoringPeta() {
 
   const isDoneUpdate = updateStatus === 'selesai'
   const canSubmitUpdate = Boolean(updateStatus)
-    && Boolean(updateNote.trim())
-    && (isDoneUpdate ? Boolean(updatePhoto && updateLighting) : Boolean(updateTitle.trim()))
+    && (!isDoneUpdate || (updateNote.trim().length >= 3 && Boolean(updatePhoto)))
     && updateState !== 'saving'
 
   const submitStatusUpdate = async (event) => {
@@ -307,16 +317,18 @@ function MonitoringPeta() {
       if (USE_DEMO_DATA) {
         await new Promise((resolve) => setTimeout(resolve, 400))
         const buktiUrl = isDoneUpdate ? updatePhotoPreview : ''
-        setBackendReports((prev) => prev.map((report) => (
-          report.id_laporan === reportId
-            ? {
-              ...report,
-              status: updateStatus,
-              status_penanganan: updateStatus,
-              ...(buktiUrl ? { foto_bukti: buktiUrl, kondisi_penerangan: updateLighting } : {}),
-            }
-            : report
-        )))
+        setBackendReports((prev) => prev.map((report) => {
+          if (report.id_laporan !== reportId) return report
+          if (!isDoneUpdate) return { ...report, status: 'diproses', status_penanganan: 'dalam_penanganan' }
+          return {
+            ...report,
+            status: 'selesai',
+            status_penanganan: 'selesai_ditangani',
+            kondisi_penerangan: updateLighting,
+            catatan_penanganan: updateNote.trim(),
+            foto_bukti_url: buktiUrl,
+          }
+        }))
         // URL pratinjau kini dipakai laporan, jadi jangan dicabut
         if (buktiUrl) {
           setUpdatePhoto(null)
@@ -329,24 +341,23 @@ function MonitoringPeta() {
         return
       }
 
-      let successMessage = 'Status laporan berhasil diperbarui.'
+      // Alur yang sama dengan halaman Laporan Warga
+      const canStart = selectedReport.status === 'diterima' && selectedReport.status_penanganan === 'perlu_penanganan'
+      const canUpload = selectedReport.status === 'diproses'
+        && ['dalam_penanganan', 'menunggu_verifikasi'].includes(selectedReport.status_penanganan)
+      let successMessage
       if (isDoneUpdate) {
-        // Selesai ditangani = unggah bukti penanganan (foto + kondisi penerangan + catatan)
+        if (!canUpload) throw new Error('Bukti hanya bisa diunggah untuk laporan yang sudah dalam penanganan. Mulai penanganan terlebih dahulu.')
         await simpanBuktiPenanganan(reportId, {
           catatanPenanganan: updateNote.trim(),
           kondisiPenerangan: updateLighting,
           fotoBukti: updatePhoto,
         })
-        successMessage = 'Bukti penanganan berhasil disimpan.'
+        successMessage = 'Bukti tersimpan. Status selesai mengikuti hasil validasi AI otomatis.'
       } else {
-        // updateStatusLaporan tidak melempar error; hasilnya { success, message | error }
-        const result = await updateStatusLaporan(reportId, {
-          status: updateStatus,
-          judul: updateTitle.trim(),
-          deskripsi: updateNote.trim(),
-        })
-        if (!result.success) throw new Error(result.error)
-        successMessage = result.message || successMessage
+        if (!canStart) throw new Error('Penanganan hanya bisa dimulai untuk laporan yang sudah tervalidasi AI dan belum ditangani.')
+        await mulaiPenangananLaporan(reportId)
+        successMessage = 'Penanganan dimulai.'
       }
 
       // Muat ulang dari backend supaya peta, daftar, tabel, dan kartu ikut sinkron
@@ -379,7 +390,7 @@ function MonitoringPeta() {
   }
 
   return (
-    <Layout>
+    <Layout onSearch={setSearchQuery} searchPlaceholder="Cari ID laporan atau lokasi...">
       <div className="monitoringpeta-container">
         {/* ===== BAGIAN ATAS (tidak diubah) ===== */}
         <section className="monitoringpeta-page-heading">
@@ -496,7 +507,7 @@ function MonitoringPeta() {
               {coordinateReports.length === 0 && (
                 <div className="map-placeholder-message map-empty-message">
                   <strong>{state === 'error' ? 'Data backend gagal dimuat' : state === 'loading' ? 'Memuat laporan...' : 'Tidak ada koordinat pada hasil filter'}</strong>
-                  <span>{state === 'error' ? 'Coba muat ulang halaman.' : 'Ubah filter atau tunggu laporan dengan koordinat tersedia.'}</span>
+                  <span>{state === 'error' ? 'Coba muat ulang halaman.' : 'Ubah filter atau kata kunci pencarian.'}</span>
                 </div>
               )}
             </div>
@@ -531,10 +542,12 @@ function MonitoringPeta() {
                       : <p className="report-data-note">Foto tidak tersedia pada data laporan.</p>}
                   </div>
 
-                  {selectedReport.foto_bukti && (
+                  {selectedReport.foto_bukti_url && (
                     <div className="visual-evidence-box">
-                      <div className="visual-evidence-header"><span>FOTO BUKTI PENANGANAN</span></div>
-                      <img src={selectedReport.foto_bukti} alt={`Foto bukti penanganan ${selectedReport.id_laporan}`} className="evidence-thumbnail" />
+                      <div className="visual-evidence-header"><span>FOTO BUKTI PERBAIKAN</span></div>
+                      {selectedReport.foto_bukti_url.startsWith('blob:')
+                        ? <img src={selectedReport.foto_bukti_url} alt={`Foto bukti perbaikan ${selectedReport.id_laporan}`} className="evidence-thumbnail" />
+                        : <AuthenticatedImage src={selectedReport.foto_bukti_url} alt={`Foto bukti perbaikan ${selectedReport.id_laporan}`} fallback="Foto bukti tidak tersedia" />}
                     </div>
                   )}
 
@@ -566,61 +579,49 @@ function MonitoringPeta() {
                             <option key={option.value} value={option.value}>{option.label}</option>
                           ))}
                         </select>
-                        {!isDoneUpdate && (
-                          <>
-                            <label className="select-label" htmlFor="update-title">Judul update</label>
-                            <input
-                              id="update-title"
-                              type="text"
-                              className="dark-select"
-                              maxLength={120}
-                              value={updateTitle}
-                              onChange={(e) => setUpdateTitle(e.target.value)}
-                              placeholder="Contoh: Perbaikan lampu dimulai"
-                              required
-                            />
-                          </>
-                        )}
-                        <label className="select-label" htmlFor="update-note">Keterangan</label>
+                        <p className="update-hint">
+                          {isDoneUpdate
+                            ? 'Isi bukti perbaikan. Status selesai mengikuti hasil validasi AI otomatis.'
+                            : 'Untuk "Selesai ditangani", pilih statusnya dulu agar kolom bukti di bawah aktif.'}
+                        </p>
+                        <label className="select-label" htmlFor="update-note">Catatan perbaikan</label>
                         <textarea
                           id="update-note"
                           className="dark-textarea"
                           rows="3"
-                          maxLength={500}
+                          maxLength={2000}
                           value={updateNote}
                           onChange={(e) => setUpdateNote(e.target.value)}
-                          placeholder={isDoneUpdate ? 'Contoh: lampu diganti, kini menyala normal.' : 'Contoh: petugas menuju lokasi untuk perbaikan.'}
-                          required
+                          placeholder="Jelaskan tindakan perbaikan yang dilakukan…"
+                          disabled={!isDoneUpdate}
+                          required={isDoneUpdate}
                         />
-                        {isDoneUpdate && (
-                          <>
-                            <label className="select-label" htmlFor="update-lighting">Kondisi penerangan setelah ditangani</label>
-                            <select
-                              id="update-lighting"
-                              className="dark-select"
-                              value={updateLighting}
-                              onChange={(e) => setUpdateLighting(e.target.value)}
-                              required
-                            >
-                              <option value="" disabled>Pilih kondisi</option>
-                              {BUKTI_LIGHTING_OPTIONS.map((option) => (
-                                <option key={option.value} value={option.value}>{option.label}</option>
-                              ))}
-                            </select>
-                            <label className="select-label" htmlFor="update-photo">Foto bukti penanganan</label>
-                            <input
-                              id="update-photo"
-                              type="file"
-                              accept="image/*"
-                              className="file-input"
-                              onChange={handlePhotoChange}
-                              required
-                            />
-                            <p className="update-hint">Format gambar, maksimal {MAX_PHOTO_MB} MB.</p>
-                            {updatePhotoPreview && (
-                              <img src={updatePhotoPreview} alt="Pratinjau foto bukti penanganan" className="update-photo-preview" />
-                            )}
-                          </>
+                        <label className="select-label" htmlFor="update-lighting">Kondisi penerangan setelah perbaikan</label>
+                        <select
+                          id="update-lighting"
+                          className="dark-select"
+                          value={updateLighting}
+                          onChange={(e) => setUpdateLighting(e.target.value)}
+                          disabled={!isDoneUpdate}
+                        >
+                          {BUKTI_LIGHTING_OPTIONS.map((option) => (
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                          ))}
+                        </select>
+                        <label className="select-label" htmlFor="update-photo">Foto bukti perbaikan</label>
+                        <input
+                          key={isDoneUpdate ? 'photo-on' : 'photo-off'}
+                          id="update-photo"
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          className="file-input"
+                          onChange={handlePhotoChange}
+                          disabled={!isDoneUpdate}
+                          required={isDoneUpdate}
+                        />
+                        <p className="update-hint">JPEG, PNG, atau WebP, maksimal {MAX_PHOTO_MB} MB.</p>
+                        {updatePhotoPreview && (
+                          <img src={updatePhotoPreview} alt="Pratinjau foto bukti perbaikan" className="update-photo-preview" />
                         )}
                         {updateMessage && (
                           <p className={`update-message update-${updateState}`} role="status">{updateMessage}</p>

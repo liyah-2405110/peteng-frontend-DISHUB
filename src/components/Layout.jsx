@@ -4,7 +4,7 @@ import logoPeteng from '../assets/logo-peteng.png'
 import { getAuth, clearAuth } from '../utils/authStorage'
 import '../css/Layout.css'
 
-function Layout({ children, onSearch }) {
+function Layout({ children, onSearch, searchPlaceholder = 'Cari ruas jalan / ID tiket...' }) {
   const location = useLocation()
   const navigate = useNavigate()
   const auth = getAuth()
@@ -44,6 +44,15 @@ function Layout({ children, onSearch }) {
     }
   }
 
+  // Hasil pencarian ikut berubah saat mengetik, tanpa perlu menekan Enter
+  const handleSearchChange = (e) => {
+    const value = e.target.value
+    setSearchQuery(value)
+    if (onSearch) {
+      onSearch(value)
+    }
+  }
+
   const currentPath = location.pathname
 
   const displayName = user.nama_dinas_perhubungan || user.email?.split('@')[0] || 'Petugas DISHUB'
@@ -78,8 +87,8 @@ function Layout({ children, onSearch }) {
       ),
     },
     {
-      to: '/artikel',
-      paths: ['/artikel'],
+      to: '/publikasi-progres',
+      paths: ['/publikasi-progres'],
       label: 'Publikasi Progres',
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -129,6 +138,8 @@ function Layout({ children, onSearch }) {
             </div>
           </div>
 
+          {/* Kolom cari hanya tampil di halaman yang menyediakan onSearch */}
+          {onSearch && (
           <form onSubmit={handleSearchSubmit} className="topbar-search-form">
             <svg className="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8" />
@@ -137,11 +148,12 @@ function Layout({ children, onSearch }) {
             <input
               type="text"
               className="topbar-search-input"
-              placeholder="Cari ruas jalan / ID tiket..."
+              placeholder={searchPlaceholder}
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
             />
           </form>
+          )}
         </div>
 
         {/* Right: Officer Profile Badge */}

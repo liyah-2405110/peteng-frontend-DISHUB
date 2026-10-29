@@ -1058,3 +1058,11 @@
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
 }
+
+/* Kolom bukti nonaktif sebelum status "Selesai ditangani" dipilih */
+.status-update-form .dark-select:disabled,
+.status-update-form .dark-textarea:disabled,
+.status-update-form .file-input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
